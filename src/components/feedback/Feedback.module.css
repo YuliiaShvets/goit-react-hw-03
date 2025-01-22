@@ -1,0 +1,10 @@
+.feedback {
+    margin-top: 40px;
+    align-items: left;
+    flex-direction: column;
+    display: flex;
+}
+
+.feedbackText{
+color: rgb(17, 90, 90);
+}
