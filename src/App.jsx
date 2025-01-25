@@ -1,58 +1,53 @@
 
-import { useState, useEffect } from "react";
+
 import s from "./App.module.css"
-import Description from "./components/description/Description.jsx";
-import Feedback from "./components/feedback/Feedback.jsx";
-import Options from "./components/options/Options.jsx";
-import Notification from "./components/notification/Notification.jsx";
+import ContactList from "./components/contactList/ContactList.jsx";
+import ContactForm from "./components/contactForm/ContactForm.jsx";
+import SearchBox from "./components/searchBox/SearchBox.jsx";
+import { useState, useEffect } from "react";
+import contacts from "./contacts.json"
 
 
 
 const App = () => {
-  const [feedback, setFeedback] = useState({ 
-    good: 0, 
-    neutral: 0, 
-    bad: 0 });
+
+  const [contacts, setContacts] = useState(() => {
+    const storedContacts = localStorage.getItem('saved-contacts');
+    return storedContacts ? JSON.parse(storedContacts) : [];
+});
+
+const [searchItem, setSearchItem] = useState('');
 
   useEffect(() => {
-    const savedFeedback = JSON.parse(localStorage.getItem('feedback'));
-    if (savedFeedback) {
-      setFeedback(savedFeedback);
-    }
-  }, []);
+  localStorage.setItem('saved-contacts', JSON.stringify(contacts));
+}, [contacts]);
 
-  useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedback));
-  }, [feedback]);
+const searchChange = (event) => {
+  setSearchItem(event.target.value);
+};
 
-  const updateFeedback = feedbackType => {
-    setFeedback(prev => ({
-      ...prev,
-      [feedbackType]: prev[feedbackType] + 1
-    }));
-  };
+const addContact = (name, number) => {
+  const newContact = { id: crypto.randomUUID(), name, number };
+  setContacts((prev) => [...prev, newContact]);
+};
 
-  const resetFeedback = () => {
-    setFeedback({ 
-      good: 0, 
-      neutral: 0, 
-      bad: 0 });
-  };
+  const handleDelete = id => {
+    const contacts = contacts.filter(contact => contact.id !== id);
+    setContacts(contacts);
+  }
 
-  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-  const positiveFeedbackPercentage = Math.round((feedback.good / totalFeedback) * 100) || 0;
+  const filterContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchItem.toLowerCase())
+  );
 
   return (
-    <div className={s.app}>
-      <Description />
-      <Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} totalFeedback={totalFeedback} />
-      {totalFeedback > 0 ? (
-        <Feedback feedback={feedback} totalFeedback={totalFeedback} positiveFeedbackPercentage={positiveFeedbackPercentage} />
-      ) : (
-        <Notification message="No feedback given yet" />
-      )}
-    </div>
-  );
-};
+<div className={s.app}>
+  <h1 className={s.title}>Phonebook</h1>
+  <ContactForm addContact={addContact}/>
+  <SearchBox searchChange={searchChange} value={searchItem}/>
+  <ContactList contacts={filterContacts} handleDelete={handleDelete}/>
+</div>
+    );
+  };
 
 export default App;
