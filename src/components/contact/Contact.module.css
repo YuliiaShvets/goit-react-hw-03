@@ -1,5 +1,5 @@
 .contactList{
-    width: 250px;
+width: 250px;
 height: 70px;
 display: flex;
 flex-direction: column;
@@ -13,6 +13,14 @@ flex-direction: row;
 justify-content: space-between;
 align-items: center;
 }
+
+/*@media (max-width: 768px) {
+    .contactList{
+        width: 200px;
+        height: 70px;
+        gap: 2px;
+    }
+}*/
 
 .contact{
     flex-direction: row;
