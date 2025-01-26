@@ -2,9 +2,9 @@ import s from "./ContactList.module.css"
 import Contact from "../contact/Contact"
 
 const ContactList = ({ contacts, handleDelete }) => (
-  <ul>
+  <ul className={s.contact}>
     {contacts.map(({ id, name, number }) => (
-      <Contact key={id} id={id} name={name} number={number} onDelete={handleDelete} />
+      <Contact key={id} id={id} name={name} number={number} handleDelete={handleDelete} />
     ))}
   </ul>
 );

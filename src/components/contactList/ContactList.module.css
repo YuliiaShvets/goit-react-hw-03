@@ -1,14 +1,9 @@
-.options{
-    display: flex;
-   align-items: center;
-    gap: 10px;
-   justify-content: center;
-
+.contact{
+list-style: none;
+align-items: center;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 16px;
+padding-left: 0px;
 }
-.btn{
-    width: 130px;
-    height: 50px;
-    background-color: rgb(150, 170, 170);
-}
-
 
